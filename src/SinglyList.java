@@ -72,29 +72,76 @@ public class SinglyList<T> extends Object
     {
         this.head.next=null;
     }
-    public Node<T>search(T key)//尚未实现。查找返回首个与key相等元素的结点，查找不成功则返回null
+    //以下为自己实现的方法
+    public Node<T>search(T key)//暂时实现。查找返回首个与key相等元素的结点，查找不成功则返回null
     {
+        if (key==null)
+            throw new NullPointerException("x==null");//抛出空对象异常
+        Node<T>front=this.head;
+        while (front.next!=null)
+        {
+            front=front.next;
+            if (front.date==key)
+                return front;
+        }
         return null;
     }
-    public boolean contains(T key)//尚未实现。判断是否包含关键字为key元素
+    public boolean contains(T key)//暂时实现。判断是否包含关键字为key元素
     {
-        return true;
+        if (key==null)
+            throw new NullPointerException("x==null");//抛出空对象异常
+        Node<T>front=this.head;
+        while (front.next!=null)
+        {
+            front=front.next;
+            if (front.date==key)
+                return true;
+        }
+        return false;
     }
-    public Node<T>insertDifferent(T x)//尚未实现。插入不重复元素。查找不成功时尾插入
+    public Node<T>insertDifferent(T x)//暂时实现。插入不重复元素。查找不成功时尾插入
     {
-        return null;
-    }
-    public T remove(T key)//尚未实现。删除首个与key相等的元素。返回被删除元素，查找不成功返回null
-    {
-        return null;
-    }
-    public void set(int i,T x)//尚未实现。设置第i个元素为x。i表长度，x!=null
-    {
+        if (contains(x)==true)
+        {
+            System.out.println("该元素已存在");
+            return null;
+        }
+        else
+            return insert(x);
 
     }
-    public int size()//尚未实现。O（n）
+    public T remove(T key)//暂时实现。删除首个与key相等的元素。返回被删除元素，查找不成功返回null
     {
-        return 0;
+        Node<T>front=this.head;
+        for (int j=0;front.next!=null&&(front.next.date!=key);j++)//寻找第i-1个或最后一个结点，front指向
+            front=front.next;
+        if (front.next!=null)//若front的后继结点存在，则删除
+        {
+            T old=front.next.date;//获得待删除结点引用的对象
+            front.next=front.next.next;//删除front的后继
+            return old;
+        }
+        return null;
+
+    }
+    public void set(int i,T x)//暂时实现。设置第i个元素为x。i表长度，x!=null
+    {
+        if (x==null)
+            throw new NullPointerException("x==null");//抛出空对象异常
+        if (i<1)
+            i=1;
+        Node<T>front=this.head.next;
+        for(int j=0;front.next!=null&&j<i;j++)//遍历单链表，寻找第i个结点
+            front=front.next;
+        front.date=x;
+    }
+    public int size()//暂时实现。O（n）
+    {
+        int count;
+        Node<T> front=this.head;
+        for (count=0;front.next!=null;count++)
+            front=front.next;
+        return count;
     }
 
 }
