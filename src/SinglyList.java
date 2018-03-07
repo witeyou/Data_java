@@ -113,7 +113,7 @@ public class SinglyList<T> extends Object
     public T remove(T key)//暂时实现。删除首个与key相等的元素。返回被删除元素，查找不成功返回null
     {
         Node<T>front=this.head;
-        for (int j=0;front.next!=null&&(front.next.date!=key);j++)//寻找第i-1个或最后一个结点，front指向
+        while (front.next!=null&&(front.next.date!=key))
             front=front.next;
         if (front.next!=null)//若front的后继结点存在，则删除
         {
@@ -130,7 +130,8 @@ public class SinglyList<T> extends Object
             throw new NullPointerException("x==null");//抛出空对象异常
         if (i<1)
             i=1;
-        Node<T>front=this.head.next;
+        //Node<T>front=this.head.next;
+        Node<T>front=this.head;//本句由上句改动得到,同时检查get()
         for(int j=0;front.next!=null&&j<i;j++)//遍历单链表，寻找第i个结点
             front=front.next;
         front.date=x;
