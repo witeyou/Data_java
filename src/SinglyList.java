@@ -73,20 +73,20 @@ public class SinglyList<T> extends Object
         this.head.next=null;
     }
     //以下为自己实现的方法
-    public Node<T>search(T key)//暂时实现。查找返回首个与key相等元素的结点，查找不成功则返回null
+    public Node<T>search(T key)//暂时实现并可以使用。查找返回首个与key相等元素的结点，查找不成功则返回null
     {
         if (key==null)
             throw new NullPointerException("x==null");//抛出空对象异常
-        Node<T>front=this.head;
-        while (front.next!=null)
+        Node<T>p=this.head.next;
+        while (p!=null)
         {
-            front=front.next;
-            if (front.date==key)
-                return front;
+            if (key.equals(p.date))
+                return p;
+            p=p.next;
         }
         return null;
     }
-    public boolean contains(T key)//暂时实现。判断是否包含关键字为key元素
+    public boolean contains(T key)//暂时实现并可以使用。判断是否包含关键字为key元素
     {
         if (key==null)
             throw new NullPointerException("x==null");//抛出空对象异常
@@ -94,12 +94,12 @@ public class SinglyList<T> extends Object
         while (front.next!=null)
         {
             front=front.next;
-            if (front.date==key)
+            if (key.equals(front.date))
                 return true;
         }
         return false;
     }
-    public Node<T>insertDifferent(T x)//暂时实现。插入不重复元素。查找不成功时尾插入
+    public Node<T>insertDifferent(T x)//暂时实现并可以使用。插入不重复元素。查找不成功时尾插入
     {
         if (contains(x)==true)
         {
@@ -110,33 +110,34 @@ public class SinglyList<T> extends Object
             return insert(x);
 
     }
-    public T remove(T key)//暂时实现。删除首个与key相等的元素。返回被删除元素，查找不成功返回null
+    public T remove(T key)//暂未实现并可以使用。删除首个与key相等的元素。返回被删除元素，查找不成功返回null
     {
         Node<T>front=this.head;
-        while (front.next!=null&&(front.next.date!=key))
-            front=front.next;
-        if (front.next!=null)//若front的后继结点存在，则删除
+        while (front.next!=null)
         {
-            T old=front.next.date;//获得待删除结点引用的对象
-            front.next=front.next.next;//删除front的后继
-            return old;
+            if (key.equals(front.next.date))
+            {
+                T old=front.next.date;//获得待删除结点引用的对象
+                front.next=front.next.next;//删除front的后继
+                return old;
+            }
+            front=front.next;
         }
         return null;
 
     }
-    public void set(int i,T x)//暂时实现。设置第i个元素为x。i表长度，x!=null
+    public void set(int i,T x)//暂时实现并可以使用。设置第i个元素为x。i表长度，x!=null
     {
         if (x==null)
             throw new NullPointerException("x==null");//抛出空对象异常
         if (i<1)
             i=1;
-        //Node<T>front=this.head.next;
-        Node<T>front=this.head;//本句由上句改动得到,同时检查get()
+        Node<T>front=this.head.next;
         for(int j=0;front.next!=null&&j<i;j++)//遍历单链表，寻找第i个结点
             front=front.next;
         front.date=x;
     }
-    public int size()//暂时实现。O（n）
+    public int size()//暂时实现并可以使用。O（n）
     {
         int count;
         Node<T> front=this.head;
