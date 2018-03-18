@@ -145,5 +145,21 @@ public class SinglyList<T> extends Object
             front=front.next;
         return count;
     }
+    public void removeAllMAtched(SinglyList<T> pattern)//删除所有与pattern匹配的子表
+    {
+        
+    }
+    public SinglyList(SinglyList<T> list)//暂时实现并可以使用。用于深拷贝
+    {
+        this.head=new Node<T>();
+        Node<T>list_p=list.head.next;//指向被复制单链表的当前节点
+        Node<T>rear=this.head;//rear指向单链表的最后一个结点
+        while (list_p!=null)
+        {
+            rear.next=new Node<T>(list_p.date,null);//尾插入，创建结点链入rear结点之后
+            rear=rear.next;//rear指向新的链尾结点。
+            list_p=list_p.next;
+        }
+    }
 
 }
