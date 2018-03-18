@@ -145,9 +145,10 @@ public class SinglyList<T> extends Object
             front=front.next;
         return count;
     }
-    public void removeAllMAtched(SinglyList<T> pattern)//删除所有与pattern匹配的子表
+    public void removeAllMatched(SinglyList<T> pattern)//暂时实现并可以使用。删除所有与pattern匹配的子表
     {
-        
+        for (Node<T>p=pattern.head.next;p!=null;p=p.next)
+            this.remove(p.date);
     }
     public SinglyList(SinglyList<T> list)//暂时实现并可以使用。用于深拷贝
     {
@@ -160,6 +161,15 @@ public class SinglyList<T> extends Object
             rear=rear.next;//rear指向新的链尾结点。
             list_p=list_p.next;
         }
+    }
+    public void addAll(SinglyList<T> list)//在this单链表之后合并连接list，设置list为空
+    {
+        Node<T>rear=this.head;
+        while (rear.next!=null)
+            rear=rear.next;
+        rear.next=list.head.next;
+        list.head.next=null;
+
     }
 
 }
