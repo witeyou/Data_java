@@ -26,14 +26,14 @@ public class SinglyList<T> extends Object
         Node<T>p=this.head.next;
         for(int j=0;p!=null&&j<i;j++)//遍历单链表，寻找第i个结点
             p=p.next;
-        return (i>=0&&p!=null)?p.date:null;//若P指向目标，返回其元素值
+        return (i>=0&&p!=null)?p.data:null;//若P指向目标，返回其元素值
     }
     public String toString()//返回单链表所有元素的描述字符串，形式为“（，）”。覆盖object类的toString（）方法，O（n）
     {
         String str=this.getClass().getName()+"(";//返回类名
         for (Node<T>p=this.head.next;p!=null;p=p.next)//p遍历单链表
         {
-            str+=p.date.toString();
+            str+=p.data.toString();
             if (p.next!=null)
                 str+=",";//不是最后一个结点时，加分隔符
         }
@@ -62,7 +62,7 @@ public class SinglyList<T> extends Object
             front=front.next;
         if (i>=0&&front.next!=null)//若front的后继结点存在，则删除
         {
-            T old=front.next.date;//获得待删除结点引用的对象
+            T old=front.next.data;//获得待删除结点引用的对象
             front.next=front.next.next;//删除front的后继
             return old;
         }
@@ -80,7 +80,7 @@ public class SinglyList<T> extends Object
         Node<T>p=this.head.next;
         while (p!=null)
         {
-            if (key.equals(p.date))
+            if (key.equals(p.data))
                 return p;
             p=p.next;
         }
@@ -94,7 +94,7 @@ public class SinglyList<T> extends Object
         while (front.next!=null)
         {
             front=front.next;
-            if (key.equals(front.date))
+            if (key.equals(front.data))
                 return true;
         }
         return false;
@@ -115,9 +115,9 @@ public class SinglyList<T> extends Object
         Node<T>front=this.head;
         while (front.next!=null)
         {
-            if (key.equals(front.next.date))
+            if (key.equals(front.next.data))
             {
-                T old=front.next.date;//获得待删除结点引用的对象
+                T old=front.next.data;//获得待删除结点引用的对象
                 front.next=front.next.next;//删除front的后继
                 return old;
             }
@@ -135,7 +135,7 @@ public class SinglyList<T> extends Object
         Node<T>front=this.head.next;
         for(int j=0;front.next!=null&&j<i;j++)//遍历单链表，寻找第i个结点
             front=front.next;
-        front.date=x;
+        front.data=x;
     }
     public int size()//暂时实现并可以使用。O（n）
     {
@@ -148,7 +148,7 @@ public class SinglyList<T> extends Object
     public void removeAllMatched(SinglyList<T> pattern)//暂时实现并可以使用。删除所有与pattern匹配的子表
     {
         for (Node<T>p=pattern.head.next;p!=null;p=p.next)
-            this.remove(p.date);
+            this.remove(p.data);
     }
     public SinglyList(SinglyList<T> list)//暂时实现并可以使用。用于深拷贝
     {
@@ -157,7 +157,7 @@ public class SinglyList<T> extends Object
         Node<T>rear=this.head;//rear指向单链表的最后一个结点
         while (list_p!=null)
         {
-            rear.next=new Node<T>(list_p.date,null);//尾插入，创建结点链入rear结点之后
+            rear.next=new Node<T>(list_p.data,null);//尾插入，创建结点链入rear结点之后
             rear=rear.next;//rear指向新的链尾结点。
             list_p=list_p.next;
         }

@@ -19,7 +19,7 @@ public class SortedSinglyList<T extends Comparable<? super T>> extends SinglyLis
     {
         super();
         for (Node<T>p=list.head.next;p!=null;p=p.next)
-            this.insert(p.date);//排序单链表按值插入
+            this.insert(p.data);//排序单链表按值插入
     }
     //不支持父类的以下两个方法，将其覆盖并抛出异常。方法体同排序单链表
     public void set(int i,T x) {}
@@ -29,7 +29,7 @@ public class SortedSinglyList<T extends Comparable<? super T>> extends SinglyLis
     public Node<T>insert(T x)
     {
         Node<T>front=this.head,p=front.next;
-        while (p!=null&&x.compareTo(p.date)>0)//寻找插入的位置
+        while (p!=null&&x.compareTo(p.data)>0)//寻找插入的位置
         {
             front=p;
             p=p.next;
