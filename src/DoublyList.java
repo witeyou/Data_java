@@ -61,20 +61,29 @@ public class DoublyList<T> extends DoubleNode<String>
             }
         }
         //进行替换操作,用listCopy.head.prev来表示listCopy的尾结点
-        if (matchHead.data.equals(pattern.head.next.data)&&matchRear.data.equals(pattern.head.prev.data))
-        {
-            CirDoublyList<T> listCopy = new CirDoublyList<T>(list);
-            matchHead.prev.next = listCopy.head.next;
-            matchHead.prev = null;
-            listCopy.head.prev.next = matchRear.next;
-            matchRear.next = null;
-            //listCopy.head = null;//不确定是否有析构方法的作用
-            listCopy.finalize();
-            patternP = pattern.head.next;//归位patternP指针
-            matchHead=this.head.next;
-            matchRear=this.head.next;
-        }
-        thisP=thisP.next;
+        if (matchHead==null||matchRear==null)
+            thisP=thisP.next;
+        else
+            if (matchHead.data.equals(pattern.head.next.data)&&matchRear.data.equals(pattern.head.prev.data))
+            {
+                CirDoublyList<T> listCopy = new CirDoublyList<T>(list);
+                matchHead.prev.next = listCopy.head.next;
+                listCopy.head.next.prev=matchHead.prev;
+                matchHead.prev = null;
+                listCopy.head.prev.next = matchRear.next;
+                matchRear.next.prev=listCopy.head.prev;
+                matchRear.next = null;
+                listCopy.head.next = null;//不确定是否有析构方法的作用
+                listCopy.head.prev = null;
+                listCopy.finalize();
+                patternP = pattern.head.next;//归位patternP指针
+                //matchHead=this.head.next;
+                //matchRear=this.head.next;
+                matchHead=null;
+                matchRear=null;
+            }
+            else
+                thisP=thisP.next;
         if (thisP==null)
             break;
     }
