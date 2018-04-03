@@ -1,5 +1,4 @@
 //本作用于第二次试验
-
 public class DoublyList<T> extends DoubleNode<String>
 {
     public DoubleNode<T>head,rear;//成员变量头和尾指针
@@ -30,101 +29,42 @@ public class DoublyList<T> extends DoubleNode<String>
     }
     public void replaceAll(CirDoublyList<T>pattern,CirDoublyList<T>list)
     {
-    DoubleNode<T>thisP=this.head.next;
-    DoubleNode<T>matchRear=this.head.next;
-    DoubleNode<T>matchHead=this.head.next;
-    DoubleNode<T>patternP=pattern.head.next;
-    while (thisP!=null)
-    {
-        while (thisP!=null)//找到被匹配的头
-            if (thisP.data.equals(patternP.data))
-            {
-                matchHead=thisP;
-                break;
+        DoubleNode<T>thisP=this.head.next;//可以表示指向了this中匹配内容的尾
+        DoubleNode<T>thisBegin=this.head.next;//指向this中匹配内容的头。也是回溯的起点
+        DoubleNode<T>patternP=pattern.head.next;//指向pattern中当前被匹配的内容
+        while (thisP!=null){
+            if (thisP.data.equals(patternP.data)){
+                while (true){
+                    if(patternP.data.equals(thisP.data)){
+                        patternP=patternP.next;
+                        thisP=thisP.next;
+                    }
+                    else{
+                        thisBegin=thisP=thisBegin.next;
+                        patternP=pattern.head.next;
+                        break;
+                    }
+                    if (patternP==pattern.head){
+                        thisP=thisP.prev;
+                        patternP=pattern.head.next;
+                        break;
+                    }
+                }
             }
             else
-            {
-                break;
-            }
-        while (thisP!=null)//找到被匹配的尾,不能确定是真是假，需要后来去判定
-        {
-            if (thisP.data.equals(patternP.data))
-            {
-                matchRear = thisP;
-                thisP=thisP.next;//此句过后指向当前的下一个
-                patternP=patternP.next;//此句过后指向当前的下一个
-            }
-            else
-            {
-                //thisP=thisP.next;//用于保证thisP不会后移陷入死循环
-                break;
-            }
-        }
-        //进行替换操作,用listCopy.head.prev来表示listCopy的尾结点
-        if (matchHead==null||matchRear==null)
-            thisP=thisP.next;
-        else
-            if (matchHead.data.equals(pattern.head.next.data)&&matchRear.data.equals(pattern.head.prev.data))
-            {
+                thisBegin=thisP=thisP.next;
+            //接下来进行替换操作,如果thisP==thisBegin应是没有成功匹配
+            if (thisP!=thisBegin) {
                 CirDoublyList<T> listCopy = new CirDoublyList<T>(list);
-                matchHead.prev.next = listCopy.head.next;
-                listCopy.head.next.prev=matchHead.prev;
-                matchHead.prev = null;
-                listCopy.head.prev.next = matchRear.next;
-                matchRear.next.prev=listCopy.head.prev;
-                matchRear.next = null;
-                listCopy.head.next = null;//不确定是否有析构方法的作用
-                listCopy.head.prev = null;
+                thisBegin.prev.next = listCopy.head.next;
+                listCopy.head.next.prev = thisBegin.prev;
+                thisBegin.prev = null;//链接头
+                listCopy.head.prev.next = thisP.next;
+                thisP.next.prev = listCopy.head.prev;
+                thisP.next=null;//链接尾
+                thisBegin=thisP=listCopy.head.prev.next;
                 listCopy.finalize();
-                patternP = pattern.head.next;//归位patternP指针
-                //matchHead=this.head.next;
-                //matchRear=this.head.next;
-                matchHead=null;
-                matchRear=null;
             }
-            else
-                thisP=thisP.next;
-        if (thisP==null)
-            break;
-    }
-    }
-
-
+        }
+   }
 }
-    /*
-    //替换表中的某种结点，根据结点的值来进行替换
-    // key1是被替换的值，key2是替换的值
-    public void replace(T key1,T key2)
-    {
-        for (DoubleNode<T>p=this.head.next;p!=null;p=p.next)
-            if(key1.equals(p.data))//p.data.equals(key1)会产生什么影响？
-                p.data=key2;
-    }
-    //所选课题，其中调用了上面的replace()方法
-    public void replaceAll(CirDoublyList<T>pattern,CirDoublyList<T>list)
-    {
-
-        DoubleNode<T>patternP=pattern.head.next;
-    DoubleNode<T>listP=list.head.next;
-    //需要注意的提供的两个参数是循环双链表，遍历时应注意结尾的判定
-    while (patternP!=pattern.head&&listP!=list.head)//防止pattern和list长度不同的情况
-        {
-            this.replace(patternP.data,listP.data);
-            patternP=patternP.next;
-            listP=listP.next;
-        }
-    */
-/*
-    public DoublyList(DoublyList<T>list)
-    {
-        this.head=new DoubleNode<T>();
-        DoubleNode<T>rear=this.head;
-        DoubleNode<T>listP=list.head.next;
-        while (listP!=null)
-        {
-            rear.next=new DoubleNode<T>(listP.data,rear,null);
-            rear=rear.next;
-            listP=listP.next;
-        }
-    }
-    */
