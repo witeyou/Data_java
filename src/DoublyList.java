@@ -27,55 +27,39 @@ public class DoublyList<T> extends DoubleNode<String>
         }
         return str+")";
     }
+
     public void replaceAll(CirDoublyList<T>pattern,CirDoublyList<T>list)
     {
         DoubleNode<T>thisP=this.head.next;//可以表示指向了this中匹配内容的尾
-        DoubleNode<T>thisBegin=this.head.next;//指向this中匹配内容的头。也是回溯的起点
+        DoubleNode<T>thisBegin=this.head;//指向this中匹配内容的头的前一个。也是回溯的起点
         DoubleNode<T>patternP=pattern.head.next;//指向pattern中当前被匹配的内容
+        //以下这个循环要遍历整个单链表
         while (thisP!=null){
-            if (thisP.data.equals(patternP.data)){
-                while (true){
-                    if(patternP.data.equals(thisP.data)){
-                        patternP=patternP.next;
-                        if(thisP.next!=null)
-                            thisP=thisP.next;
-
+            //以下这个循环要遍历整个pattern,这个循环中已经包含了thisP&thisBegin的移位，patternP的复位
+            while (thisP!=null&&thisP.data.equals(patternP.data)){
+                //patternP==pattern.head 用于判断是否匹配全部完成
+                if (patternP==pattern.head){
+                    //匹配全部完成，则进行替换操作，并对patternP进行复位
+                    patternP=pattern.head.next;//patternP进行复位
+                    CirDoublyList<T> listCopy = new CirDoublyList<T>(list);
+                    thisBegin.next = listCopy.head.next;
+                    listCopy.head.next.prev = thisBegin;//改头
+                    thisP=thisP.next;//此时thisP 指向了匹配内容的下一个
+                    listCopy.head.prev.next=thisP;//改尾
+                    if (thisP!=null) {
+                        thisP.prev = listCopy.head.prev;
+                        //thisP.next=null;这句话可能是不需要的
+                        thisBegin=thisP.prev;//thisBeign回到thisP的前一位
                     }
-                    else{
-                        thisBegin=thisP=thisBegin.next;
-                        patternP=pattern.head.next;
-                        break;
-                    }
-                    if (patternP==pattern.head){
-                        if(thisP.next!=null)
-                            thisP=thisP.prev;
-                        patternP=pattern.head.next;
-                        break;
-                    }
+                }//以下的else中两个指针同时右移准备进行下一元素的比较
+                else {
+                    patternP=patternP.next;
+                    thisP=thisP.next;
                 }
             }
-            else
-                thisBegin=thisP=thisP.next;
-            //接下来进行替换操作,如果thisP==thisBegin应是没有成功匹配
-            if (thisP!=thisBegin) {
-                CirDoublyList<T> listCopy = new CirDoublyList<T>(list);
-                thisBegin.prev.next = listCopy.head.next;
-                listCopy.head.next.prev = thisBegin.prev;
-                thisBegin.prev = null;//链接头
-                if (thisP.next!=null){
-                    listCopy.head.prev.next = thisP.next;
-                    thisP.next.prev = listCopy.head.prev;
-                    thisP.next=null;//链接尾(是结尾的情况)
-                    thisBegin=thisP=listCopy.head.prev.next;
-                    listCopy.finalize();
-                }
-                else{
-                    listCopy.head.prev.next =null;
-                    thisBegin=thisP=listCopy.head.prev.next;
-                    listCopy.finalize();
-                }
-
-            }
+            //如果从上面上面那个循环中跳出，说明匹配过程出现失败
+            thisP=thisBegin.next.next;
+            thisBegin=thisBegin.next;
         }
-   }
+    }
 }
