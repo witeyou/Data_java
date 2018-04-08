@@ -37,7 +37,9 @@ public class DoublyList<T> extends DoubleNode<String>
                 while (true){
                     if(patternP.data.equals(thisP.data)){
                         patternP=patternP.next;
-                        thisP=thisP.next;
+                        if(thisP.next!=null)
+                            thisP=thisP.next;
+
                     }
                     else{
                         thisBegin=thisP=thisBegin.next;
@@ -45,7 +47,8 @@ public class DoublyList<T> extends DoubleNode<String>
                         break;
                     }
                     if (patternP==pattern.head){
-                        thisP=thisP.prev;
+                        if(thisP.next!=null)
+                            thisP=thisP.prev;
                         patternP=pattern.head.next;
                         break;
                     }
@@ -59,11 +62,19 @@ public class DoublyList<T> extends DoubleNode<String>
                 thisBegin.prev.next = listCopy.head.next;
                 listCopy.head.next.prev = thisBegin.prev;
                 thisBegin.prev = null;//链接头
-                listCopy.head.prev.next = thisP.next;
-                thisP.next.prev = listCopy.head.prev;
-                thisP.next=null;//链接尾
-                thisBegin=thisP=listCopy.head.prev.next;
-                listCopy.finalize();
+                if (thisP.next!=null){
+                    listCopy.head.prev.next = thisP.next;
+                    thisP.next.prev = listCopy.head.prev;
+                    thisP.next=null;//链接尾(是结尾的情况)
+                    thisBegin=thisP=listCopy.head.prev.next;
+                    listCopy.finalize();
+                }
+                else{
+                    listCopy.head.prev.next =null;
+                    thisBegin=thisP=listCopy.head.prev.next;
+                    listCopy.finalize();
+                }
+
             }
         }
    }
