@@ -12,3 +12,5 @@
 hs_err_pid*
 
 \.idea/workspace\.xml
+src/.vscode/settings.json
+src/.vscode/launch.json
