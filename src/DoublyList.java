@@ -33,16 +33,18 @@ public class DoublyList<T> extends DoubleNode<String> {
     public void replaceAll(CirDoublyList<T> pattern, CirDoublyList<T> list) {
         DoubleNode<T> thisP = this.head.next;//可以表示指向了this中匹配内容的尾
         DoubleNode<T> thisBegin = this.head;//指向this中匹配内容的头的前一个。也是回溯的起点
-        DoubleNode<T> patternP = pattern.head.next;//指向pattern中当前被匹配的内容
+
         while (thisBegin.next != null) {
-            while (patternP.data != null && thisP.data.equals(patternP.data) && patternP != pattern.head) {
+            DoubleNode<T> patternP = pattern.head.next;//指向pattern中当前被匹配的内容
+            thisP = thisBegin.next;
+            while (patternP != pattern.head && patternP != null && thisP.data.equals(patternP.data)) {
                 patternP = patternP.next;
                 thisP = thisP.next;
             }
             if (patternP == pattern.head) {
                 //匹配全部完成，则进行替换操作，并对patternP进行复位
                 //此时thisP 指向了匹配内容的下一个
-                patternP = pattern.head.next;//patternP进行复位
+
                 CirDoublyList<T> listCopy = new CirDoublyList<T>(list);
                 thisBegin.next = listCopy.head.next;
                 listCopy.head.next.prev = thisBegin;//改头
@@ -56,7 +58,7 @@ public class DoublyList<T> extends DoubleNode<String> {
                 }
             } else {
                 thisBegin = thisBegin.next;
-                thisP = thisBegin.next;
+
             }
         }
     }
