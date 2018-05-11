@@ -16,3 +16,5 @@ src/.vscode/settings.json
 src/.vscode/launch.json
 
 out/
+
+src/test\.java
