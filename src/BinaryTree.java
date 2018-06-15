@@ -63,7 +63,7 @@ public class BinaryTree<T> {
         BinaryNode<T>p=this.root,q=pattern.root;
         while (p!=null||!stack.isEmpty()){
             if (p!=null){
-                if (p.data.equals(q.data)&&search(p,pattern))
+                if (equals(p,pattern))
                     return p;
                stack.push(p);
                p=p.left;
@@ -75,13 +75,14 @@ public class BinaryTree<T> {
         }
         return null;
     }
-    private boolean search(BinaryNode<T> start,BinaryTree<T> pattern){
+    private boolean equals(BinaryNode<T> start,BinaryTree<T> pattern){
         LinkedStack<BinaryNode<T>>stackT=new LinkedStack<BinaryNode<T>>();
         LinkedStack<BinaryNode<T>>stackP=new LinkedStack<BinaryNode<T>>();
         BinaryNode<T>p=start;
         BinaryNode<T>q=pattern.root;
-        while (p!=null||!stackT.isEmpty()) {
-                if (p != null) {
+
+        while ((q!=null||stackP!=null)&&(p!=null||!stackT.isEmpty())) {
+                if (p != null&&q!=null) {
                     if(p.data.equals(q.data)) {
                         stackP.push(q);
                         q = q.left;
@@ -99,19 +100,21 @@ public class BinaryTree<T> {
                     p = stackT.pop();
                     p = p.right;
                 }
-                if (q==null&&!stackP.isEmpty())
+                if (q==null&&stackP.isEmpty())//判断pattern遍历完成
                     return true;
         }
         return false;
     }
 
     public static void main(String args[]){
-        String[] prelist={"A","B","D",null,"G",null,null,null,"C","E",null,null,"F","H"};
-        //String[] prelist={"A","B",null,"D","C",null,null};
-        String[] pattern={"D",null,"G",null,null};
+        //String[] prelist={"A","B","D",null,"G",null,null,null,"C","E",null,null,"F","H"};
+        String[] prelist={"A","B","D",null,null,"E",null,null,"C","F",null,null,"G",null,null};
+        //String[] pattern={"D",null,"G",null,null};
+        String[] pattern={"B","D",null,null,"E",null,null};
         BinaryTree<String> bitree =new BinaryTree<String>(prelist);
         BinaryTree<String> patternTree =new BinaryTree<String>(pattern);
-        System.out.println("先根遍历："+bitree.toString());
+        System.out.println("先根遍历prelisst："+bitree.toString());
+        System.out.println("先根遍历pattern："+patternTree.toString());
         //bitree.insert("Z");
         //System.out.println("先根遍历："+bitree.toString());
         BinaryNode<String> result=bitree.search(patternTree);
