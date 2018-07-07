@@ -60,7 +60,7 @@ public class BinaryTree<T> {
     //实验题目，先根遍历查找首个与pattern匹配的子树。使用栈的非递归实现
     public BinaryNode<T> search(BinaryTree<T> pattern){
         LinkedStack<BinaryNode<T>>stack=new LinkedStack<BinaryNode<T>>();
-        BinaryNode<T>p=this.root,q=pattern.root;
+        BinaryNode<T> p = this.root;
         while (p!=null||!stack.isEmpty()){
             if (p!=null){
                 if (equals(p,pattern))
@@ -76,47 +76,37 @@ public class BinaryTree<T> {
         return null;
     }
     private boolean equals(BinaryNode<T> start,BinaryTree<T> pattern){
-        LinkedStack<BinaryNode<T>>stackT=new LinkedStack<BinaryNode<T>>();
-        LinkedStack<BinaryNode<T>>stackP=new LinkedStack<BinaryNode<T>>();
-        BinaryNode<T>p=start;
-        BinaryNode<T>q=pattern.root;
-
-        while ((q!=null||stackP!=null)&&(p!=null||!stackT.isEmpty())) {
-                if (p != null&&q!=null) {
-                    if(p.data.equals(q.data)) {
-                        stackP.push(q);
-                        q = q.left;
-                    }
-                    else return false;
-                    stackT.push(p);
-                    p = p.left;
-                }
-                else {
-                    if (q==null){
-                        q = stackP.pop();
-                        q = q.right;
-                    }
-                    else return false;
+        LinkedStack<BinaryNode<T>> stackT = new LinkedStack<BinaryNode<T>>();//this链的栈
+        LinkedStack<BinaryNode<T>> stackP = new LinkedStack<BinaryNode<T>>();//pattern链的栈
+        BinaryNode<T> p = start;                                             //this链中
+        BinaryNode<T> q = pattern.root;                                      //pattern链中
+        while ((q != null || !stackP.isEmpty()) && (p != null || !stackT.isEmpty())) {
+            if (p != null && q != null && p.data.equals(q.data)) {
+                stackP.push(q);
+                q = q.left;
+                stackT.push(p);
+                p = p.left;
+            } else {
+                if (p == null && q == null) {
+                    q = stackP.pop();
+                    q = q.right;
                     p = stackT.pop();
                     p = p.right;
-                }
-                if (q==null&&stackP.isEmpty())//判断pattern遍历完成
-                    return true;
+                } else return false;
+            }
+            if (q == null && stackP.isEmpty())//判断pattern遍历完成
+                return true;
         }
         return false;
     }
 
     public static void main(String args[]){
-        //String[] prelist={"A","B","D",null,"G",null,null,null,"C","E",null,null,"F","H"};
         String[] prelist={"A","B","D",null,null,"E",null,null,"C","F",null,null,"G",null,null};
-        //String[] pattern={"D",null,"G",null,null};
         String[] pattern={"B","D",null,null,"E",null,null};
         BinaryTree<String> bitree =new BinaryTree<String>(prelist);
         BinaryTree<String> patternTree =new BinaryTree<String>(pattern);
         System.out.println("先根遍历prelisst："+bitree.toString());
         System.out.println("先根遍历pattern："+patternTree.toString());
-        //bitree.insert("Z");
-        //System.out.println("先根遍历："+bitree.toString());
         BinaryNode<String> result=bitree.search(patternTree);
         System.out.println("result:"+result.toString());
     }
